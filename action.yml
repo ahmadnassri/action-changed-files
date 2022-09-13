@@ -32,4 +32,4 @@ runs:
       env:
         DIFF_PATHS: ${{ inputs.pathspec }}
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
-      run: ${{ github.action_path }}/scripts/index.sh ${{ inputs.file }}
+      run: ${{ github.action_path }}/scripts/index.sh

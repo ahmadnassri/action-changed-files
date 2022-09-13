@@ -41,7 +41,7 @@ jobs:
           echo "this step will only run if specific files have changed"
 ```
 
-> ⚠️ when running on `push` events, a `fetch-depth` of `0` higher is required.
+> ⚠️ when running on `push` events, a `fetch-depth` of `0` or higher is required.
 
 ## `push` vs `pull_request`
 
