@@ -1,0 +1,8 @@
+version: 2.0
+
+id: template-action-composite
+
+about:
+  title: Template GitHub Composite Actions
+  description: A template for GitHub Template GitHub Composite Actions
+  repository: ahmadnassri/template-action-composite

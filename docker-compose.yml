@@ -1,0 +1,21 @@
+# ------------------------------------------------------- #
+# Note: this file originates in template-action-composite #
+# ------------------------------------------------------- #
+
+services:
+  # ---- mega-linter ---- #
+  lint:
+    image: oxsecurity/megalinter:v6.6.0
+    volumes:
+      - ./:/tmp/lint
+    environment:
+      MEGALINTER_CONFIG: .github/linters/.mega-linter.yml
+      REPORT_OUTPUT_FOLDER: none
+      VALIDATE_ALL_CODEBASE: true
+
+  # ---- readme generator ---- #
+  readme:
+    image: pandoc/minimal:2.18.0
+    volumes:
+      - ./:/data
+    command: --defaults=.pandoc.yml
