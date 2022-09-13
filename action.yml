@@ -1,0 +1,35 @@
+name: Changed Files
+description: detect and list changed files in push & pull_requests events using `git diff <pathspec>`
+
+branding:
+  icon: file-plus
+  color: green
+
+inputs:
+  pathspec:
+    description: pathspec pattern used to look for changes
+    required: false
+    default: "*"
+
+outputs:
+  changed:
+    description: changed flag (true / false)
+    value: ${{ steps.data.changed }}
+
+  files:
+    description: list of changed files
+    value: ${{ steps.data.files }}
+
+  json:
+    description: json array of changed files
+    value: ${{ steps.data.files }}
+
+runs:
+  using: composite
+  steps:
+    - id: data
+      shell: bash
+      env:
+        DIFF_PATHS: ${{ inputs.pathspec }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      run: ${{ github.action_path }}/scripts/index.sh ${{ inputs.file }}

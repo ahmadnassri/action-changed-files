@@ -1,8 +1,8 @@
 version: 2.0
 
-id: template-action-composite
+id: action-changed-files
 
 about:
-  title: Template GitHub Composite Actions
-  description: A template for GitHub Template GitHub Composite Actions
-  repository: ahmadnassri/template-action-composite
+  title: Changed Files
+  description: detect and list changed files in push & pull_requests events using `git diff <pathspec>`
+  repository: ahmadnassri/action-changed-files
