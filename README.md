@@ -45,7 +45,7 @@ jobs:
 
       - if: steps.changed-files-specific.outputs.changed == 'true'
         run: |
-          echo "this step will only run if specific files have changed"          
+          echo "this step will only run if specific files have changed"
 ```
 
 > ⚠️ when running on `push` events, a `fetch-depth` of `0` higher is required.
