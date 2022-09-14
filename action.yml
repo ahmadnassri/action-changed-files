@@ -29,7 +29,7 @@ runs:
   steps:
     - id: data
       shell: bash
+      run: ${{ github.action_path }}/scripts/index.sh
       env:
         DIFF_PATHS: ${{ inputs.pathspec }}
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
-      run: ${{ github.action_path }}/scripts/index.sh
