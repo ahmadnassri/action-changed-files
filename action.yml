@@ -14,15 +14,15 @@ inputs:
 outputs:
   changed:
     description: changed flag (true / false)
-    value: ${{ steps.data.changed }}
+    value: ${{ steps.data.outputs.changed }}
 
   files:
     description: list of changed files
-    value: ${{ steps.data.files }}
+    value: ${{ steps.data.outputs.files }}
 
   json:
     description: json array of changed files
-    value: ${{ steps.data.files }}
+    value: ${{ steps.data.outputs.files }}
 
 runs:
   using: composite

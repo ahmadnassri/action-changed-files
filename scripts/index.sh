@@ -13,5 +13,10 @@ CHANGED="$(git diff --exit-code --quiet "${BASE_SHA}" HEAD -- "${DIFF_PATHS}" &&
 FILES="$(git diff --name-only "${BASE_SHA}" HEAD -- "${DIFF_PATHS}" | tr '\n' ' ')"
 
 echo "::set-output name=changed::${CHANGED}"
-echo "::set-output name=files::${FILES}"
-echo "::set-output name=json::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${FILES}")"
+
+if [[ $FILES ]]; then
+  echo "::set-output name=files::${FILES}"
+  echo "::set-output name=json::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${FILES}")"
+else
+  echo "::set-output name=json::[]"
+fi
