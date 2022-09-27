@@ -32,7 +32,7 @@ jobs:
             echo "$file has changed"
           done
 
-      - if: contains(steps.changed-files.outputs.files, "package-lock.json")
+      - if: contains(steps.changed-files.outputs.files, 'package-lock.json')
         run: |
           echo "package-lock.json has changed"
 
