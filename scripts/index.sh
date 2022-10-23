@@ -12,11 +12,11 @@ fi
 CHANGED="$(git diff --exit-code --quiet "${BASE_SHA}" HEAD -- "${DIFF_PATHS}" && echo 'false' || echo 'true')"
 FILES="$(git diff --name-only "${BASE_SHA}" HEAD -- "${DIFF_PATHS}" | tr '\n' ' ')"
 
-echo "::set-output name=changed::${CHANGED}"
+echo "changed=${CHANGED}" >> "${GITHUB_OUTPUT}"
 
 if [[ $FILES ]]; then
-  echo "::set-output name=files::${FILES}"
-  echo "::set-output name=json::$(jq --compact-output --null-input '$ARGS.positional' --args -- "${FILES}")"
+  echo "files=${FILES}" >> "${GITHUB_OUTPUT}"
+  echo "json=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${FILES}")" >> "${GITHUB_OUTPUT}"
 else
-  echo "::set-output name=json::[]"
+  echo "json=[]" >> "${GITHUB_OUTPUT}"
 fi
