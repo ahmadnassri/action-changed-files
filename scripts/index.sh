@@ -35,9 +35,20 @@ FILES="$(git diff --name-only ${BASE_SHA} HEAD -- ${DIFF_PATHS} | tr '\n' ' ')"
 
 echo "changed=${CHANGED}" >> "${GITHUB_OUTPUT}"
 
+if [[ $CHANGED == "false" ]]; then
+  echo "json=[]" >> "${GITHUB_OUTPUT}"
+  echo "❌ no files were changed"
+  exit 0
+fi
+
+echo "✅ files were changed"
+
 if [[ $FILES ]]; then
+  echo "::group::changed files"
+  echo $FILES | tr ' ' '\n'
+  echo "::endgroup::"
+
+  # send list of files to
   echo "files=${FILES}" >> "${GITHUB_OUTPUT}"
   echo "json=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${FILES}")" >> "${GITHUB_OUTPUT}"
-else
-  echo "json=[]" >> "${GITHUB_OUTPUT}"
 fi
