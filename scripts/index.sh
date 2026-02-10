@@ -29,9 +29,23 @@ if [[ -z $BASE_SHA && $GITHUB_EVENT_NAME == "push" ]]; then
   fi
 fi
 
-# The following lines use the determined BASE_SHA to find what changed.
-CHANGED="$(git diff --exit-code --quiet ${BASE_SHA} HEAD -- ${DIFF_PATHS} && echo 'false' || echo 'true')"
-FILES="$(git diff --name-only ${BASE_SHA} HEAD -- ${DIFF_PATHS} | tr '\n' ' ')"
+# On push: report changed if either (commits in push) OR (working tree) match pathspec.
+# This allows detecting in-repo changes made during the workflow (e.g. tofu apply).
+if [[ $GITHUB_EVENT_NAME == "push" ]]; then
+  CHANGED_COMMITS="$(git diff --exit-code --quiet ${BASE_SHA} HEAD -- ${DIFF_PATHS} && echo 'false' || echo 'true')"
+  CHANGED_WORKING="$(git diff --exit-code --quiet HEAD -- ${DIFF_PATHS} && echo 'false' || echo 'true')"
+
+  if [[ "$CHANGED_COMMITS" == "true" || "$CHANGED_WORKING" == "true" ]]; then
+    CHANGED="true"
+  else
+    CHANGED="false"
+  fi
+  FILES="$( ( git diff --name-only ${BASE_SHA} HEAD -- ${DIFF_PATHS}; git diff --name-only HEAD -- ${DIFF_PATHS} ) | sort -u | tr '\n' ' ')"
+else
+  # pull_request: only compare commits (base to HEAD).
+  CHANGED="$(git diff --exit-code --quiet ${BASE_SHA} HEAD -- ${DIFF_PATHS} && echo 'false' || echo 'true')"
+  FILES="$(git diff --name-only ${BASE_SHA} HEAD -- ${DIFF_PATHS} | tr '\n' ' ')"
+fi
 
 echo "changed=${CHANGED}" >> "${GITHUB_OUTPUT}"
 
